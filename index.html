@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="fr" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <script>
+      (function () {
+        var t = localStorage.getItem('qr-forge-theme');
+        document.documentElement.setAttribute('data-theme', t === 'dark' ? 'dark' : 'light');
+      })();
+    </script>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/logo.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Générateur de QR Code gratuit. Créez des codes QR personnalisés pour liens, contacts, vidéos, musique, PDF, réseaux sociaux et plus." />
+    <meta name="keywords" content="générateur qr code, qr code gratuit, qr code personnalisé, qr code avec logo, qr forge" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="QR Forge | Générateur de QR Code gratuit" />
+    <meta property="og:description" content="Créez des QR codes personnalisés gratuitement : logo, couleurs, PNG, SVG et PDF." />
+    <meta property="og:image" content="/logo.svg" />
+    <meta property="og:locale" content="fr_FR" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="QR Forge | Générateur de QR Code gratuit" />
+    <meta name="twitter:description" content="Créez des QR codes personnalisés gratuitement : logo, couleurs, PNG, SVG et PDF." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet" />
+    <title>QR Forge | Générateur de QR Code gratuit</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

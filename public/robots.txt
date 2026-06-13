@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://qrforge-tg.vercel.app/sitemap.xml
