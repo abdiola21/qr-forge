@@ -15,8 +15,9 @@
     }
   ],
   "rewrites": [
-    { "source": "/sitemap.xml", "destination": "/sitemap.xml" },
-    { "source": "/robots.txt", "destination": "/robots.txt" },
-    { "source": "/(.*)", "destination": "/index.html" }
+    {
+      "source": "/:path((?!sitemap\\.xml|robots\\.txt|google.*\\.html|favicon\\.svg|logo\\.svg|icons\\.svg|assets/).*)",
+      "destination": "/index.html"
+    }
   ]
 }
