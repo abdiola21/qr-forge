@@ -14,10 +14,17 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { useLanguage } from '../i18n/LanguageContext';
 import { siteConfig } from '../config/site';
+import { usePageSeo } from '../hooks/usePageSeo';
 
 export default function LegalPage() {
   const { t } = useLanguage();
   const l = t.legal;
+
+  usePageSeo({
+    title: l.title,
+    description: l.intro.slice(0, 155),
+    path: '/mentions-legales',
+  });
 
   const tocItems = [
     { id: 'editor', label: l.editorTitle },

@@ -2,7 +2,6 @@
 import { useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { Analytics } from '@vercel/analytics/react';
-import GoogleAnalytics from './components/GoogleAnalytics';
 import HomePage from './pages/HomePage';
 import LegalPage from './pages/LegalPage';
 import BackgroundAnimation from './components/BackgroundAnimation';
@@ -24,7 +23,6 @@ export default function App() {
         <Route path="/mentions-legales" element={<LegalPage />} />
       </Routes>
       <Analytics />
-      <GoogleAnalytics />
     </div>
   );
 }
