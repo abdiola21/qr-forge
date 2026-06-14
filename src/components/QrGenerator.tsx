@@ -177,7 +177,6 @@ export default function QrGenerator() {
 
           <div className="generator-right">
             <div className="preview-panel">
-              <h3>{t.generator.preview}</h3>
 
               <div className={`validation-banner ${valid ? 'valid' : 'invalid'}`}>
                 {valid ? (
