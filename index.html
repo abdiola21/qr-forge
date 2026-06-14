@@ -12,7 +12,9 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="apple-touch-icon" href="/logo.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Générateur de QR Code gratuit. Créez des codes QR personnalisés pour liens, contacts, vidéos, musique, PDF, réseaux sociaux et plus." />
+    <meta name="theme-color" content="#0077b6" />
+    <meta name="author" content="QR Forge" />
+    <meta name="description" content="Générateur de QR Code gratuit. Créez des codes QR personnalisés pour liens, contacts, vidéos, musique, PDF, réseaux sociaux et plus. Sans inscription." />
     <meta name="keywords" content="générateur qr code, qr code gratuit, qr code personnalisé, qr code avec logo, qr forge" />
     <meta name="robots" content="index, follow" />
     <link rel="canonical" href="https://qrforge-tg.vercel.app/" />
@@ -20,9 +22,11 @@
     <meta property="og:url" content="https://qrforge-tg.vercel.app/" />
     <meta property="og:site_name" content="QR Forge" />
     <meta property="og:title" content="QR Forge | Générateur de QR Code gratuit" />
-    <meta property="og:description" content="Créez des QR codes personnalisés gratuitement : logo, couleurs, PNG, SVG et PDF." />
+    <meta property="og:description" content="Créez des QR codes personnalisés gratuitement : logo, couleurs, PNG, SVG et PDF. Sans inscription." />
     <meta property="og:image" content="https://qrforge-tg.vercel.app/logo.svg" />
+    <meta property="og:image:alt" content="Logo QR Forge — générateur de QR code gratuit" />
     <meta property="og:locale" content="fr_FR" />
+    <meta property="og:locale:alternate" content="en_US" />
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:title" content="QR Forge | Générateur de QR Code gratuit" />
     <meta name="twitter:description" content="Créez des QR codes personnalisés gratuitement : logo, couleurs, PNG, SVG et PDF." />
@@ -30,14 +34,40 @@
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
-        "@type": "WebApplication",
-        "name": "QR Forge",
-        "url": "https://qrforge-tg.vercel.app/",
-        "description": "Générateur de QR Code gratuit. Créez des codes QR personnalisés pour liens, contacts, vidéos, réseaux sociaux et plus.",
-        "applicationCategory": "UtilitiesApplication",
-        "operatingSystem": "Web",
-        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" },
-        "inLanguage": ["fr", "en"]
+        "@graph": [
+          {
+            "@type": "WebSite",
+            "@id": "https://qrforge-tg.vercel.app/#website",
+            "url": "https://qrforge-tg.vercel.app/",
+            "name": "QR Forge",
+            "description": "Générateur de QR Code gratuit en ligne",
+            "inLanguage": ["fr-FR", "en-US"],
+            "publisher": { "@id": "https://qrforge-tg.vercel.app/#organization" }
+          },
+          {
+            "@type": "Organization",
+            "@id": "https://qrforge-tg.vercel.app/#organization",
+            "name": "QR Forge",
+            "url": "https://qrforge-tg.vercel.app/",
+            "logo": {
+              "@type": "ImageObject",
+              "url": "https://qrforge-tg.vercel.app/logo.svg"
+            }
+          },
+          {
+            "@type": "WebApplication",
+            "@id": "https://qrforge-tg.vercel.app/#app",
+            "name": "QR Forge",
+            "url": "https://qrforge-tg.vercel.app/",
+            "description": "Générateur de QR Code gratuit. Créez des codes QR personnalisés pour liens, contacts, vidéos, réseaux sociaux et plus.",
+            "applicationCategory": "UtilitiesApplication",
+            "operatingSystem": "Web",
+            "browserRequirements": "Requires JavaScript",
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" },
+            "inLanguage": ["fr-FR", "en-US"],
+            "isPartOf": { "@id": "https://qrforge-tg.vercel.app/#website" }
+          }
+        ]
       }
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />

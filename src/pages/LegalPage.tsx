@@ -17,13 +17,15 @@ import { siteConfig } from '../config/site';
 import { usePageSeo } from '../hooks/usePageSeo';
 
 export default function LegalPage() {
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
   const l = t.legal;
+  const seo = siteConfig.seo[lang];
 
   usePageSeo({
     title: l.title,
-    description: l.intro.slice(0, 155),
+    description: seo.legalDescription,
     path: '/mentions-legales',
+    lang,
   });
 
   const tocItems = [
