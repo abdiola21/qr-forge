@@ -3,8 +3,8 @@ export const siteConfig = {
   /** URL publique du site (à mettre à jour après déploiement Vercel) */
   siteUrl: 'https://qrforge-tg.vercel.app',
   name: 'QR Forge',
-  /** Image Open Graph / Twitter (1200×630 recommandé ; logo SVG en attendant) */
-  ogImage: 'https://qrforge-tg.vercel.app/logo.svg',
+  /** Image Open Graph / Twitter (1200×630) */
+  ogImage: 'https://qrforge-tg.vercel.app/og-image.png',
   seo: {
     fr: {
       defaultTitle: 'QR Forge | Générateur de QR Code gratuit',
