@@ -2,8 +2,6 @@
 import { Link } from 'react-router-dom';
 import {
   ArrowLeft,
-  Building2,
-  Cloud,
   Copyright,
   Shield,
   Cookie,
@@ -29,8 +27,6 @@ export default function LegalPage() {
   });
 
   const tocItems = [
-    { id: 'editor', label: l.editorTitle },
-    { id: 'host', label: l.hostTitle },
     { id: 'ip', label: l.ipTitle },
     { id: 'privacy', label: l.privacyTitle },
     { id: 'cookies', label: l.cookiesTitle },
@@ -80,46 +76,6 @@ export default function LegalPage() {
           </nav>
 
           <div className="legal-sections">
-            <section id="editor" className="legal-section legal-info-section">
-              <div className="legal-section-head">
-                <div className="legal-section-icon">
-                  <Building2 size={20} strokeWidth={2} />
-                </div>
-                <h2>{l.editorTitle}</h2>
-              </div>
-              <ul className="legal-info-list">
-                <li><strong>{l.editorNameLabel}</strong> {siteConfig.editorName}</li>
-                <li><strong>{l.editorStatusLabel}</strong> {siteConfig.editorStatus}</li>
-                <li><strong>{l.editorAddressLabel}</strong> {siteConfig.editorAddress}</li>
-                <li>
-                  <strong>{l.editorEmailLabel}</strong>{' '}
-                  <a href={`mailto:${siteConfig.editorEmail}`}>{siteConfig.editorEmail}</a>
-                </li>
-                {siteConfig.editorPhone ? (
-                  <li><strong>{l.editorPhoneLabel}</strong> {siteConfig.editorPhone}</li>
-                ) : null}
-              </ul>
-            </section>
-
-            <section id="host" className="legal-section legal-info-section">
-              <div className="legal-section-head">
-                <div className="legal-section-icon">
-                  <Cloud size={20} strokeWidth={2} />
-                </div>
-                <h2>{l.hostTitle}</h2>
-              </div>
-              <ul className="legal-info-list">
-                <li><strong>{l.hostNameLabel}</strong> {siteConfig.hostName}</li>
-                <li><strong>{l.hostAddressLabel}</strong> {siteConfig.hostAddress}</li>
-                <li>
-                  <strong>{l.hostWebsiteLabel}</strong>{' '}
-                  <a href={siteConfig.hostWebsite} target="_blank" rel="noopener noreferrer">
-                    {siteConfig.hostWebsite}
-                  </a>
-                </li>
-              </ul>
-            </section>
-
             {sections.map((section) => {
               const Icon = section.icon;
               return (

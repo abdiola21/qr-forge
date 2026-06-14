@@ -23,12 +23,6 @@ export const siteConfig = {
         'Legal notice for QR Forge, a free QR code generator published from Togo.',
     },
   },
-  editorName: '[Votre nom ou raison sociale]',
-  editorStatus: '[Statut : ex. particulier, auto-entrepreneur…]',
-  editorAddress: '[Adresse à Lomé, Togo]',
-  editorEmail: 'contact@example.com',
-  editorPhone: '',
-  hostName: 'Vercel Inc.',
-  hostAddress: '440 N Barranca Avenue #4133, Covina, CA 91723, États-Unis',
-  hostWebsite: 'https://vercel.com',
+  /** ID de mesure GA4 (ex. G-XXXXXXXXXX) — variable VITE_GA_MEASUREMENT_ID sur Vercel */
+  googleAnalyticsId: import.meta.env.VITE_GA_MEASUREMENT_ID ?? '',
 };
