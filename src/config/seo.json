@@ -1,0 +1,8 @@
+{
+  "siteUrl": "https://qrforge-tg.vercel.app",
+  "hrefLangs": ["fr", "en", "x-default"],
+  "sitemapRoutes": [
+    { "path": "/", "changefreq": "weekly", "priority": "1.0" },
+    { "path": "/mentions-legales", "changefreq": "monthly", "priority": "0.5" }
+  ]
+}

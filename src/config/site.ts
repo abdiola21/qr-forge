@@ -1,10 +1,12 @@
 /** Informations du site — à personnaliser avant mise en ligne */
+import seo from './seo.json';
+
 export const siteConfig = {
-  /** URL publique du site (à mettre à jour après déploiement Vercel) */
-  siteUrl: 'https://qrforge-tg.vercel.app',
+  /** URL publique du site (source : seo.json) */
+  siteUrl: seo.siteUrl,
   name: 'QR Forge',
   /** Image Open Graph / Twitter (1200×630) */
-  ogImage: 'https://qrforge-tg.vercel.app/og-image.png',
+  ogImage: `${seo.siteUrl}/og-image.png`,
   seo: {
     fr: {
       defaultTitle: 'QR Forge | Générateur de QR Code gratuit',
@@ -26,3 +28,5 @@ export const siteConfig = {
   /** ID de mesure GA4 (ex. G-XXXXXXXXXX) — variable VITE_GA_MEASUREMENT_ID sur Vercel */
   googleAnalyticsId: import.meta.env.VITE_GA_MEASUREMENT_ID ?? '',
 };
+
+export type SitemapRoute = (typeof seo.sitemapRoutes)[number];
