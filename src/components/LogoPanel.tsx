@@ -27,9 +27,18 @@ export default function LogoPanel({
   const handleLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
+    if (!file.type.startsWith('image/')) return;
+
     const reader = new FileReader();
-    reader.onload = () => update('logoUrl', reader.result as string);
+    reader.onload = () => {
+      const dataUrl = reader.result as string;
+      const probe = new Image();
+      probe.onload = () => update('logoUrl', dataUrl);
+      probe.onerror = () => update('logoUrl', null);
+      probe.src = dataUrl;
+    };
     reader.readAsDataURL(file);
+    e.target.value = '';
   };
 
   return (

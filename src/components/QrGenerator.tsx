@@ -207,7 +207,7 @@ export default function QrGenerator() {
                   hint={t.generator.selectTypeHint}
                   readyHint={t.generator.testScanHint}
                   valid={valid}
-                  qrContainerRef={valid ? containerRef : undefined}
+                  qrContainerRef={containerRef}
                   qrBackground={design.backgroundColor}
                 />
               </div>

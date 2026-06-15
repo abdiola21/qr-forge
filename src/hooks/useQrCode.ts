@@ -19,50 +19,80 @@ function buildImageOptions(logoUrl: string | null | undefined, logoSize: number)
   return options;
 }
 
+function buildQrOptions(
+  data: string,
+  design: QrDesign,
+  size: number,
+  logoUrl: string | null | undefined,
+) {
+  return {
+    width: size,
+    height: size,
+    type: 'svg' as const,
+    data: data || ' ',
+    margin: design.margin,
+    qrOptions: { errorCorrectionLevel: 'H' as const },
+    dotsOptions: { color: design.foregroundColor, type: design.dotStyle },
+    cornersSquareOptions: { color: design.foregroundColor, type: design.cornerSquareStyle },
+    cornersDotOptions: { color: design.foregroundColor, type: design.cornerDotStyle },
+    backgroundOptions: { color: design.backgroundColor },
+    imageOptions: buildImageOptions(logoUrl, design.logoSize),
+    ...(logoUrl ? { image: logoUrl } : {}),
+  };
+}
+
+/** Vérifie qu'une image (data URL ou URL) est chargeable */
+function canLoadImage(url: string): Promise<boolean> {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.onload = () => resolve(true);
+    img.onerror = () => resolve(false);
+    if (!url.startsWith('data:')) img.crossOrigin = 'anonymous';
+    img.src = url;
+  });
+}
+
 export function useQrCode({ data, design, logoUrl = null, size = 280 }: UseQrCodeOptions) {
   const containerRef = useRef<HTMLDivElement>(null);
   const qrRef = useRef<QRCodeStyling | null>(null);
-  const imageOptions = buildImageOptions(logoUrl, design.logoSize);
 
-  // Initialisation unique de l'instance QR
   useEffect(() => {
-    if (!qrRef.current) {
-      qrRef.current = new QRCodeStyling({
-        width: size,
-        height: size,
-        type: 'svg',
-        data: data || ' ',
-        margin: design.margin,
-        qrOptions: { errorCorrectionLevel: 'H' },
-        dotsOptions: { color: design.foregroundColor, type: design.dotStyle },
-        cornersSquareOptions: { color: design.foregroundColor, type: design.cornerSquareStyle },
-        cornersDotOptions: { color: design.foregroundColor, type: design.cornerDotStyle },
-        backgroundOptions: { color: design.backgroundColor },
-        imageOptions,
-        ...(logoUrl ? { image: logoUrl } : {}),
+    let cancelled = false;
+
+    async function renderQr() {
+      const container = containerRef.current;
+      if (!container) return;
+
+      let safeLogo = logoUrl;
+      if (logoUrl) {
+        const ok = await canLoadImage(logoUrl);
+        if (cancelled) return;
+        if (!ok) safeLogo = null;
+      }
+
+      const options = buildQrOptions(data, design, size, safeLogo);
+
+      if (!qrRef.current) {
+        qrRef.current = new QRCodeStyling(options);
+      } else {
+        qrRef.current.update(options);
+      }
+
+      // qr-code-styling charge le logo de façon asynchrone
+      await new Promise<void>((resolve) => {
+        window.setTimeout(resolve, safeLogo ? 120 : 0);
       });
+      if (cancelled || containerRef.current !== container) return;
+
+      container.innerHTML = '';
+      qrRef.current.append(container);
     }
-  }, []);
 
-  // Mise à jour du rendu à chaque changement de données ou de design
-  useEffect(() => {
-    if (!qrRef.current || !containerRef.current) return;
+    void renderQr();
 
-    qrRef.current.update({
-      width: size,
-      height: size,
-      data: data || ' ',
-      margin: design.margin,
-      dotsOptions: { color: design.foregroundColor, type: design.dotStyle },
-      cornersSquareOptions: { color: design.foregroundColor, type: design.cornerSquareStyle },
-      cornersDotOptions: { color: design.foregroundColor, type: design.cornerDotStyle },
-      backgroundOptions: { color: design.backgroundColor },
-      imageOptions: buildImageOptions(logoUrl, design.logoSize),
-      image: logoUrl || undefined,
-    });
-
-    containerRef.current.innerHTML = '';
-    qrRef.current.append(containerRef.current);
+    return () => {
+      cancelled = true;
+    };
   }, [data, design, logoUrl, size]);
 
   const downloadPng = useCallback(async () => {
@@ -75,7 +105,6 @@ export function useQrCode({ data, design, logoUrl = null, size = 280 }: UseQrCod
     const blob = await qrRef.current.getRawData('png');
     if (!blob) return;
 
-    // Conversion PNG → PDF au format A4
     const { jsPDF } = await import('jspdf');
     const imgUrl = URL.createObjectURL(blob as Blob);
     const img = new Image();
