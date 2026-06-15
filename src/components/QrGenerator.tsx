@@ -6,7 +6,7 @@ import {
 } from 'lucide-react';
 import type { QrContent, QrDesign, QrContentType } from '../types/qr';
 import { CONTENT_TYPES } from '../constants/designOptions';
-import { buildQrPayload, isPayloadValid } from '../utils/qrPayload';
+import { buildQrPayload, getPayloadValidationIssue } from '../utils/qrPayload';
 import { resolveEffectiveLogo, isAutoSocialLogo } from '../utils/resolveQrLogo';
 import {
   loadHistory, addToHistory, removeHistoryEntry, clearHistory,
@@ -71,7 +71,8 @@ export default function QrGenerator() {
   const [history, setHistory] = useState<QrHistoryEntry[]>(() => loadHistory());
 
   const payload = buildQrPayload(content);
-  const valid = isPayloadValid(content);
+  const validationIssue = getPayloadValidationIssue(content);
+  const valid = validationIssue === null;
   const effectiveLogo = resolveEffectiveLogo(content, design);
   const autoSocialLogo = isAutoSocialLogo(content, design);
   const { containerRef, downloadPng, downloadPdf, downloadSvg } = useQrCode({
@@ -191,7 +192,11 @@ export default function QrGenerator() {
                   <>
                     <AlertCircle size={22} className="validation-icon" />
                     <div className="validation-text">
-                      <p>{t.generator.validationMsg}</p>
+                      <p>
+                        {validationIssue === 'unsafe_url'
+                          ? t.generator.unsafeUrlMsg
+                          : t.generator.validationMsg}
+                      </p>
                     </div>
                   </>
                 )}

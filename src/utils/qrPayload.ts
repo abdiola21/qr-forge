@@ -1,4 +1,5 @@
 import type { QrContent, SocialNetwork } from '../types/qr';
+import { hasUnsafeUrlScheme, isSafeHttpUrl } from './urlSafety';
 
 /** Générateurs d'URL par réseau social */
 const SOCIAL_URLS: Record<SocialNetwork, (username: string) => string> = {
@@ -71,8 +72,37 @@ export function buildQrPayload(content: QrContent): string {
   }
 }
 
+export type PayloadValidationIssue = 'missing' | 'unsafe_url';
+
+function hasUnsafeUrlInContent(content: QrContent): boolean {
+  switch (content.type) {
+    case 'url':
+    case 'video':
+    case 'music':
+    case 'pdf':
+    case 'location':
+      return hasUnsafeUrlScheme(content.url);
+    case 'social': {
+      const value = content.socialUsername.trim();
+      return /^https?:\/\//i.test(value) && hasUnsafeUrlScheme(value);
+    }
+    case 'contact':
+      return content.contact.website.trim() !== '' && hasUnsafeUrlScheme(content.contact.website);
+    default:
+      return false;
+  }
+}
+
+/** Détaille pourquoi le contenu n'est pas valide (null = OK) */
+export function getPayloadValidationIssue(content: QrContent): PayloadValidationIssue | null {
+  if (hasUnsafeUrlInContent(content)) return 'unsafe_url';
+  return isPayloadValid(content) ? null : 'missing';
+}
+
 /** Vérifie que les champs requis sont remplis pour le type choisi */
 export function isPayloadValid(content: QrContent): boolean {
+  if (hasUnsafeUrlInContent(content)) return false;
+
   const payload = buildQrPayload(content);
   if (!payload) return false;
 
@@ -82,12 +112,7 @@ export function isPayloadValid(content: QrContent): boolean {
     case 'music':
     case 'pdf':
     case 'location':
-      try {
-        new URL(payload);
-        return true;
-      } catch {
-        return payload.startsWith('http');
-      }
+      return isSafeHttpUrl(payload);
     case 'contact':
       return !!(content.contact.phone || content.contact.email || content.contact.firstName);
     case 'social':
