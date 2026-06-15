@@ -89,5 +89,5 @@ export function buildSocialLogoDataUrl(network: SocialNetwork, size = 128): stri
     </svg>
   `.trim();
 
-  return `data:image/svg+xml;base64,${btoa(svg)}`;
+  return `data:image/svg+xml;base64,${btoa(unescape(encodeURIComponent(svg)))}`;
 }

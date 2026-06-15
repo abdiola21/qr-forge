@@ -1624,15 +1624,6 @@ body.page-loading {
   justify-content: center;
 }
 
-.phone-qr-preview--hidden {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  opacity: 0;
-  pointer-events: none;
-}
-
 .phone-qr-preview canvas,
 .phone-qr-preview svg {
   max-width: 138px;

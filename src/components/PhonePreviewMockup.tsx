@@ -6,7 +6,7 @@ interface PhonePreviewMockupProps {
   hint: string;
   readyHint: string;
   valid: boolean;
-  qrContainerRef: RefObject<HTMLDivElement | null>;
+  qrContainerRef?: RefObject<HTMLDivElement | null>;
   qrBackground?: string;
 }
 
@@ -108,12 +108,9 @@ export default function PhonePreviewMockup({
               )}
 
               <div className="phone-demo-qr-wrap">
-                <div
-                  ref={qrContainerRef}
-                  className={`qr-preview phone-qr-preview${valid ? '' : ' phone-qr-preview--hidden'}`}
-                  aria-hidden={!valid}
-                />
-                {!valid && (
+                {valid && qrContainerRef ? (
+                  <div ref={qrContainerRef} className="qr-preview phone-qr-preview" />
+                ) : (
                   <>
                     <DemoQrPattern />
                     <span className="phone-scan-line" />

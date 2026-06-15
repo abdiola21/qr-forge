@@ -76,10 +76,11 @@ export default function QrGenerator() {
   const effectiveLogo = resolveEffectiveLogo(content, design);
   const autoSocialLogo = isAutoSocialLogo(content, design);
   const { containerRef, downloadPng, downloadPdf, downloadSvg } = useQrCode({
-    data: valid ? payload : 'https://qr-forge.app',
+    data: payload,
     design,
     logoUrl: effectiveLogo,
     size: resolution,
+    enabled: valid,
   });
 
   const persistHistory = useCallback(() => {
@@ -207,7 +208,7 @@ export default function QrGenerator() {
                   hint={t.generator.selectTypeHint}
                   readyHint={t.generator.testScanHint}
                   valid={valid}
-                  qrContainerRef={containerRef}
+                  qrContainerRef={valid ? containerRef : undefined}
                   qrBackground={design.backgroundColor}
                 />
               </div>
