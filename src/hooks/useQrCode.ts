@@ -11,9 +11,18 @@ interface UseQrCodeOptions {
   size?: number;
 }
 
+function buildImageOptions(logoUrl: string | null | undefined, logoSize: number) {
+  const options = { margin: 8, imageSize: logoSize / 100 };
+  if (logoUrl && !logoUrl.startsWith('data:')) {
+    return { ...options, crossOrigin: 'anonymous' as const };
+  }
+  return options;
+}
+
 export function useQrCode({ data, design, logoUrl = null, size = 280 }: UseQrCodeOptions) {
   const containerRef = useRef<HTMLDivElement>(null);
   const qrRef = useRef<QRCodeStyling | null>(null);
+  const imageOptions = buildImageOptions(logoUrl, design.logoSize);
 
   // Initialisation unique de l'instance QR
   useEffect(() => {
@@ -29,7 +38,7 @@ export function useQrCode({ data, design, logoUrl = null, size = 280 }: UseQrCod
         cornersSquareOptions: { color: design.foregroundColor, type: design.cornerSquareStyle },
         cornersDotOptions: { color: design.foregroundColor, type: design.cornerDotStyle },
         backgroundOptions: { color: design.backgroundColor },
-        imageOptions: { crossOrigin: 'anonymous', margin: 8, imageSize: design.logoSize / 100 },
+        imageOptions,
         ...(logoUrl ? { image: logoUrl } : {}),
       });
     }
@@ -48,7 +57,7 @@ export function useQrCode({ data, design, logoUrl = null, size = 280 }: UseQrCod
       cornersSquareOptions: { color: design.foregroundColor, type: design.cornerSquareStyle },
       cornersDotOptions: { color: design.foregroundColor, type: design.cornerDotStyle },
       backgroundOptions: { color: design.backgroundColor },
-      imageOptions: { crossOrigin: 'anonymous', margin: 8, imageSize: design.logoSize / 100 },
+      imageOptions: buildImageOptions(logoUrl, design.logoSize),
       image: logoUrl || undefined,
     });
 

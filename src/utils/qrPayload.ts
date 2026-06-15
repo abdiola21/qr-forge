@@ -1,23 +1,10 @@
-import type { QrContent, SocialNetwork } from '../types/qr';
+import type { QrContent } from '../types/qr';
+import { normalizeSocialInput } from './socialUrl';
 import { hasUnsafeUrlScheme, isSafeHttpUrl } from './urlSafety';
 
-/** Générateurs d'URL par réseau social */
-const SOCIAL_URLS: Record<SocialNetwork, (username: string) => string> = {
-  facebook: (u) => `https://facebook.com/${u}`,
-  instagram: (u) => `https://instagram.com/${u.replace('@', '')}`,
-  x: (u) => `https://x.com/${u.replace('@', '')}`,
-  linkedin: (u) => `https://linkedin.com/in/${u}`,
-  tiktok: (u) => `https://tiktok.com/@${u.replace('@', '')}`,
-  youtube: (u) => `https://youtube.com/@${u.replace('@', '')}`,
-  whatsapp: (u) => `https://wa.me/${u.replace(/\D/g, '')}`,
-  telegram: (u) => `https://t.me/${u.replace('@', '')}`,
-  snapchat: (u) => `https://snapchat.com/add/${u.replace('@', '')}`,
-};
-
 /** Construit l'URL du réseau social (URL complète ou identifiant) */
-function buildSocialUrl(network: SocialNetwork, value: string): string {
-  if (/^https?:\/\//i.test(value)) return value;
-  return SOCIAL_URLS[network](value);
+function buildSocialUrl(network: QrContent['socialNetwork'], value: string): string {
+  return normalizeSocialInput(network, value);
 }
 
 /** Construit une fiche contact au format vCard 3.0 */
@@ -83,8 +70,8 @@ function hasUnsafeUrlInContent(content: QrContent): boolean {
     case 'location':
       return hasUnsafeUrlScheme(content.url);
     case 'social': {
-      const value = content.socialUsername.trim();
-      return /^https?:\/\//i.test(value) && hasUnsafeUrlScheme(value);
+      const url = buildSocialUrl(content.socialNetwork, content.socialUsername);
+      return url !== '' && hasUnsafeUrlScheme(url);
     }
     case 'contact':
       return content.contact.website.trim() !== '' && hasUnsafeUrlScheme(content.contact.website);
@@ -115,8 +102,10 @@ export function isPayloadValid(content: QrContent): boolean {
       return isSafeHttpUrl(payload);
     case 'contact':
       return !!(content.contact.phone || content.contact.email || content.contact.firstName);
-    case 'social':
-      return content.socialUsername.trim().length > 0;
+    case 'social': {
+      const url = buildSocialUrl(content.socialNetwork, content.socialUsername);
+      return url !== '' && isSafeHttpUrl(url);
+    }
     case 'text':
       return content.text.trim().length > 0;
     case 'email':
