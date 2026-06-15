@@ -55,6 +55,7 @@ export function usePageSeo({
     setMeta('og:url', pageUrl, 'property');
     setMeta('og:image', siteConfig.ogImage, 'property');
     setMeta('og:locale', lang === 'fr' ? 'fr_FR' : 'en_US', 'property');
+    setMeta('twitter:card', 'summary_large_image');
     setMeta('twitter:title', fullTitle);
     setMeta('twitter:description', desc);
     setMeta('twitter:image', siteConfig.ogImage);
