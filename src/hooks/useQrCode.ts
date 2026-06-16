@@ -72,8 +72,14 @@ function blobToDataUrl(blob: Blob): Promise<string> {
   });
 }
 
-/** Convertit le SVG déjà rendu (aperçu) en PNG via canvas */
-async function exportPngFromQr(qr: QRCodeStyling, size: number): Promise<Blob> {
+/** Convertit le SVG déjà rendu (aperçu) en PNG via canvas.
+ * Pour une meilleure netteté, on rasterise à plus haute résolution puis on télécharge.
+ */
+async function exportPngFromQr(
+  qr: QRCodeStyling,
+  size: number,
+  exportScale: number,
+): Promise<Blob> {
   await waitForQrDraw(qr);
   const raw = await qr.getRawData('svg');
   if (!(raw instanceof Blob)) throw new Error('Export SVG impossible');
@@ -88,14 +94,17 @@ async function exportPngFromQr(qr: QRCodeStyling, size: number): Promise<Blob> {
       const img = new Image();
       img.onload = () => {
         const canvas = document.createElement('canvas');
-        canvas.width = size;
-        canvas.height = size;
-        const ctx = canvas.getContext('2d');
+        const outSize = Math.max(1, Math.round(size * exportScale));
+        canvas.width = outSize;
+        canvas.height = outSize;
+        const ctx = canvas.getContext('2d', { alpha: false });
         if (!ctx) {
           reject(new Error('Canvas indisponible'));
           return;
         }
-        ctx.drawImage(img, 0, 0, size, size);
+        // Évite le lissage lors du scaling SVG→bitmap
+        ctx.imageSmoothingEnabled = false;
+        ctx.drawImage(img, 0, 0, outSize, outSize);
         canvas.toBlob(
           (pngBlob) => {
             if (pngBlob) resolve(pngBlob);
@@ -199,13 +208,14 @@ export function useQrCode({
 
   const downloadPng = useCallback(async () => {
     if (!qrRef.current) return;
-    const blob = await exportPngFromQr(qrRef.current, size);
+    // Rasteriser à plus haute résolution pour une meilleure netteté
+    const blob = await exportPngFromQr(qrRef.current, size, 3);
     triggerFileDownload(blob, 'qr-code.png');
   }, [size]);
 
   const downloadPdf = useCallback(async () => {
     if (!qrRef.current) return;
-    const blob = await exportPngFromQr(qrRef.current, size);
+    const blob = await exportPngFromQr(qrRef.current, size, 3);
     const dataUrl = await blobToDataUrl(blob);
     const { jsPDF } = await import('jspdf');
     const pdfSize = 210;
