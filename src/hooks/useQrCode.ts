@@ -26,12 +26,11 @@ function buildQrOptions(
   design: QrDesign,
   size: number,
   logoUrl: string | null | undefined,
-  renderType: 'svg' | 'canvas' = 'svg',
 ) {
   return {
     width: size,
     height: size,
-    type: renderType,
+    type: 'svg' as const,
     data: data || ' ',
     margin: design.margin,
     qrOptions: { errorCorrectionLevel: 'H' as const },
@@ -64,27 +63,53 @@ async function resolveSafeLogo(logoUrl: string | null | undefined) {
   return ok ? logoUrl : null;
 }
 
-/** Export PNG via une instance canvas dédiée (fiable vs conversion SVG→canvas) */
-async function exportPngBlob(
-  data: string,
-  design: QrDesign,
-  size: number,
-  logoUrl: string | null | undefined,
-): Promise<Blob> {
-  const safeLogo = await resolveSafeLogo(logoUrl);
+function blobToDataUrl(blob: Blob): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result as string);
+    reader.onerror = () => reject(new Error('Lecture du fichier impossible'));
+    reader.readAsDataURL(blob);
+  });
+}
 
-  async function render(withLogo: string | null | undefined) {
-    const exporter = new QRCodeStyling(buildQrOptions(data, design, size, withLogo, 'canvas'));
-    const blob = await exporter.getRawData('png');
-    if (blob instanceof Blob) return blob;
-    throw new Error('PNG export failed');
-  }
+/** Convertit le SVG déjà rendu (aperçu) en PNG via canvas */
+async function exportPngFromQr(qr: QRCodeStyling, size: number): Promise<Blob> {
+  await waitForQrDraw(qr);
+  const raw = await qr.getRawData('svg');
+  if (!(raw instanceof Blob)) throw new Error('Export SVG impossible');
+
+  const svgText = await raw.text();
+  const svgUrl = URL.createObjectURL(
+    new Blob([svgText], { type: 'image/svg+xml;charset=utf-8' }),
+  );
 
   try {
-    return await render(safeLogo);
-  } catch {
-    if (safeLogo) return render(null);
-    throw new Error('PNG export failed');
+    return await new Promise<Blob>((resolve, reject) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        canvas.width = size;
+        canvas.height = size;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) {
+          reject(new Error('Canvas indisponible'));
+          return;
+        }
+        ctx.drawImage(img, 0, 0, size, size);
+        canvas.toBlob(
+          (pngBlob) => {
+            if (pngBlob) resolve(pngBlob);
+            else reject(new Error('Conversion PNG impossible'));
+          },
+          'image/png',
+          1,
+        );
+      };
+      img.onerror = () => reject(new Error('Rasterisation SVG impossible'));
+      img.src = svgUrl;
+    });
+  } finally {
+    URL.revokeObjectURL(svgUrl);
   }
 }
 
@@ -97,7 +122,8 @@ function triggerFileDownload(blob: Blob, filename: string) {
   document.body.appendChild(link);
   link.click();
   link.remove();
-  URL.revokeObjectURL(url);
+  // Laisser le navigateur démarrer le téléchargement avant de révoquer l'URL
+  window.setTimeout(() => URL.revokeObjectURL(url), 2000);
 }
 
 export function useQrCode({
@@ -133,7 +159,7 @@ export function useQrCode({
       const safeLogo = await resolveSafeLogo(logoUrl);
       if (cancelled) return;
 
-      const options = buildQrOptions(data, design, size, safeLogo, 'svg');
+      const options = buildQrOptions(data, design, size, safeLogo);
       const needsNewInstance =
         !qrRef.current || attachedContainerRef.current !== container;
 
@@ -153,7 +179,7 @@ export function useQrCode({
       } catch {
         if (cancelled) return;
         container.replaceChildren();
-        const fallback = new QRCodeStyling(buildQrOptions(data, design, size, null, 'svg'));
+        const fallback = new QRCodeStyling(buildQrOptions(data, design, size, null));
         qrRef.current = fallback;
         attachedContainerRef.current = container;
         fallback.append(container);
@@ -172,41 +198,25 @@ export function useQrCode({
   }, [enabled, data, design, logoUrl, size]);
 
   const downloadPng = useCallback(async () => {
-    const blob = await exportPngBlob(data, design, size, logoUrl);
+    if (!qrRef.current) return;
+    const blob = await exportPngFromQr(qrRef.current, size);
     triggerFileDownload(blob, 'qr-code.png');
-  }, [data, design, size, logoUrl]);
+  }, [size]);
 
   const downloadPdf = useCallback(async () => {
-    const blob = await exportPngBlob(data, design, size, logoUrl);
+    if (!qrRef.current) return;
+    const blob = await exportPngFromQr(qrRef.current, size);
+    const dataUrl = await blobToDataUrl(blob);
     const { jsPDF } = await import('jspdf');
-    const imgUrl = URL.createObjectURL(blob);
-    const img = new Image();
-
-    await new Promise<void>((resolve, reject) => {
-      img.onload = () => {
-        try {
-          const pdfSize = 210;
-          const margin = 20;
-          const imgSize = pdfSize - margin * 2;
-          const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
-          pdf.setFillColor(255, 255, 255);
-          pdf.rect(0, 0, pdfSize, pdfSize, 'F');
-          pdf.addImage(img, 'PNG', margin, margin, imgSize, imgSize);
-          pdf.save('qr-code.pdf');
-          resolve();
-        } catch (error) {
-          reject(error);
-        } finally {
-          URL.revokeObjectURL(imgUrl);
-        }
-      };
-      img.onerror = () => {
-        URL.revokeObjectURL(imgUrl);
-        reject(new Error('PDF export failed'));
-      };
-      img.src = imgUrl;
-    });
-  }, [data, design, size, logoUrl]);
+    const pdfSize = 210;
+    const margin = 20;
+    const imgSize = pdfSize - margin * 2;
+    const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+    pdf.setFillColor(255, 255, 255);
+    pdf.rect(0, 0, pdfSize, pdfSize, 'F');
+    pdf.addImage(dataUrl, 'PNG', margin, margin, imgSize, imgSize);
+    pdf.save('qr-code.pdf');
+  }, [size]);
 
   const downloadSvg = useCallback(async () => {
     if (!qrRef.current) return;
