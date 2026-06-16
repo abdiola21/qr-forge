@@ -273,6 +273,50 @@ export const translations = {
       lawTitle: 'Droit applicable',
       lawContent: 'Les présentes mentions légales sont régies par le droit togolais. En cas de litige, et à défaut de résolution amiable, les tribunaux compétents de Lomé, Togo, seront seuls compétents.',
     },
+    guidePage: {
+      label: 'GUIDE & FAQ',
+      title: 'Guide : créer un QR code gratuit en ligne',
+      backHome: 'Retour à l\'accueil',
+      intro:
+        'QR Forge est un générateur de QR code gratuit qui fonctionne entièrement dans votre navigateur. Ce guide explique comment créer un QR code personnalisé avec logo, couleurs et export PNG, SVG ou PDF — sans inscription.',
+      stepsTitle: 'Les 4 étapes pour créer votre QR code',
+      faqTitle: 'Questions fréquentes sur les QR codes',
+      cta: 'Créer mon QR code gratuitement',
+      faq: [
+        {
+          q: 'Comment créer un QR code gratuit avec QR Forge ?',
+          a: 'Choisissez un type de contenu (lien, contact, réseau social, Wi-Fi…), remplissez les champs, personnalisez les couleurs et le logo, puis téléchargez votre QR en PNG, SVG ou PDF. Tout se fait en ligne, sans compte.',
+        },
+        {
+          q: 'Quels types de contenu puis-je encoder dans un QR code ?',
+          a: 'QR Forge prend en charge les URL de site web, les contacts vCard, les vidéos, la musique, les PDF, les lieux Google Maps, les réseaux sociaux (Instagram, WhatsApp, LinkedIn, TikTok…), le texte libre, les e-mails et les réseaux Wi-Fi.',
+        },
+        {
+          q: 'Puis-je ajouter mon logo au centre du QR code ?',
+          a: 'Oui. Uploadez votre logo ou utilisez le logo automatique pour les réseaux sociaux. Ajustez la taille du logo avec le curseur. Le QR utilise une correction d\'erreur élevée (niveau H) pour rester scannable.',
+        },
+        {
+          q: 'Quels formats de téléchargement sont disponibles ?',
+          a: 'Vous pouvez exporter en PNG (web et réseaux sociaux), SVG (impression vectorielle) et PDF (documents et flyers). La résolution est réglable jusqu\'à 600 px.',
+        },
+        {
+          q: 'Mes données sont-elles envoyées à un serveur ?',
+          a: 'Non. La génération du QR code se fait localement dans votre navigateur. Vos liens, numéros et textes ne sont pas stockés sur nos serveurs.',
+        },
+        {
+          q: 'Comment créer un QR code WhatsApp ou LinkedIn ?',
+          a: 'Sélectionnez « Réseau social », choisissez WhatsApp ou LinkedIn, puis entrez votre numéro ou l\'URL de profil. Le logo officiel est appliqué automatiquement.',
+        },
+        {
+          q: 'Le QR code expire-t-il ? Y a-t-il une limite de scans ?',
+          a: 'Non. Les QR codes générés avec QR Forge n\'expirent pas et peuvent être scannés un nombre illimité de fois. Seul le contenu encodé (ex. un lien cassé) peut cesser de fonctionner.',
+        },
+        {
+          q: 'Pourquoi mon QR code ne se scanne pas ?',
+          a: 'Vérifiez le contraste entre les couleurs, évitez un logo trop grand, testez avec la caméra de votre téléphone et assurez-vous que l\'URL ou le numéro saisi est correct.',
+        },
+      ],
+    },
     lang: {
       switchTo: 'Passer en anglais',
       fr: 'FR',
@@ -554,6 +598,50 @@ export const translations = {
       liabilityContent: 'QR Forge is provided "as is", free of charge, without warranty of any kind. The publisher strives to ensure the accuracy of information and proper functioning of the tool, but cannot guarantee that generated QR codes will work in all circumstances.\n\nThe publisher shall not be liable for any direct or indirect damage resulting from use of the site or generated QR codes, including incorrect content entered by the user, outdated links, or reading issues on third-party devices.\n\nThe user is solely responsible for the content encoded in their QR codes and for compliance with applicable regulations.',
       lawTitle: 'Applicable law',
       lawContent: 'This legal notice is governed by Togolese law. In the event of a dispute, and failing amicable resolution, the competent courts of Lomé, Togo, shall have exclusive jurisdiction.',
+    },
+    guidePage: {
+      label: 'GUIDE & FAQ',
+      title: 'Guide: create a free QR code online',
+      backHome: 'Back to home',
+      intro:
+        'QR Forge is a free QR code generator that runs entirely in your browser. This guide explains how to create a custom QR code with logo, colors, and PNG, SVG or PDF export — no sign-up required.',
+      stepsTitle: '4 steps to create your QR code',
+      faqTitle: 'Frequently asked questions about QR codes',
+      cta: 'Create my free QR code',
+      faq: [
+        {
+          q: 'How do I create a free QR code with QR Forge?',
+          a: 'Pick a content type (link, contact, social media, Wi-Fi…), fill in the fields, customize colors and logo, then download your QR as PNG, SVG or PDF. Everything happens online, with no account.',
+        },
+        {
+          q: 'What content types can I encode in a QR code?',
+          a: 'QR Forge supports website URLs, vCard contacts, videos, music, PDFs, Google Maps locations, social networks (Instagram, WhatsApp, LinkedIn, TikTok…), plain text, emails and Wi-Fi networks.',
+        },
+        {
+          q: 'Can I add my logo in the center of the QR code?',
+          a: 'Yes. Upload your own logo or use the automatic brand logo for social networks. Adjust logo size with the slider. The QR uses high error correction (level H) to stay scannable.',
+        },
+        {
+          q: 'Which download formats are available?',
+          a: 'You can export as PNG (web and social), SVG (vector print) and PDF (documents and flyers). Resolution is adjustable up to 600 px.',
+        },
+        {
+          q: 'Is my data sent to a server?',
+          a: 'No. QR code generation runs locally in your browser. Your links, phone numbers and text are not stored on our servers.',
+        },
+        {
+          q: 'How do I create a WhatsApp or LinkedIn QR code?',
+          a: 'Select "Social media", choose WhatsApp or LinkedIn, then enter your phone number or profile URL. The official brand logo is applied automatically.',
+        },
+        {
+          q: 'Does the QR code expire? Is there a scan limit?',
+          a: 'No. QR codes generated with QR Forge never expire and can be scanned unlimited times. Only the encoded content (e.g. a broken link) may stop working.',
+        },
+        {
+          q: 'Why won\'t my QR code scan?',
+          a: 'Check color contrast, avoid an oversized logo, test with your phone camera, and make sure the URL or number you entered is correct.',
+        },
+      ],
     },
     lang: {
       switchTo: 'Switch to French',

@@ -5,6 +5,7 @@ import { Analytics } from '@vercel/analytics/react';
 import GoogleAnalytics from './components/GoogleAnalytics';
 import HomePage from './pages/HomePage';
 import LegalPage from './pages/LegalPage';
+import GuidePage from './pages/GuidePage';
 import BackgroundAnimation from './components/BackgroundAnimation';
 import PageLoader from './components/PageLoader';
 import ScrollToTop from './components/ScrollToTop';
@@ -22,6 +23,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/mentions-legales" element={<LegalPage />} />
+        <Route path="/guide" element={<GuidePage />} />
       </Routes>
       <Analytics />
       <GoogleAnalytics />

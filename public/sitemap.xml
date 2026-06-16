@@ -19,4 +19,13 @@
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
+  <url>
+    <loc>https://qrforge-tg.vercel.app/guide</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://qrforge-tg.vercel.app/guide" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://qrforge-tg.vercel.app/guide" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://qrforge-tg.vercel.app/guide" />
+    <lastmod>2026-06-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
 </urlset>

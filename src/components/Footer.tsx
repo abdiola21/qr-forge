@@ -122,7 +122,7 @@ export default function Footer() {
                 {f.navProduct}
               </span>
               <FooterLink href="#features">{f.featuresLink}</FooterLink>
-              <FooterLink href="#guide">{f.guideLink}</FooterLink>
+              <FooterLink to="/guide">{f.guideLink}</FooterLink>
               <FooterLink href="#about">{f.aboutLink}</FooterLink>
               <FooterLink href="#generator">
                 <QrCode size={15} />
@@ -135,7 +135,7 @@ export default function Footer() {
                 <BookOpen size={14} />
                 {f.navResources}
               </span>
-              <FooterLink href="#guide">{f.guideLink}</FooterLink>
+              <FooterLink to="/guide">{f.guideLink}</FooterLink>
               <FooterLink href="#features">{f.featuresLink}</FooterLink>
               <FooterLink href="#about">{f.aboutLink}</FooterLink>
             </div>
