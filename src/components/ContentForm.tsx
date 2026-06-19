@@ -5,6 +5,7 @@ import { useLanguage } from '../i18n/LanguageContext';
 import SocialNetworkPicker from './SocialNetworkPicker';
 import MenuForm from './MenuForm';
 import BusinessForm from './BusinessForm';
+import AppsForm from './AppsForm';
 import AddressFieldGroup from './AddressFieldGroup';
 import AddressAutocomplete from './AddressAutocomplete';
 import { suggestionToMapsUrl } from '../utils/addressSearch';
@@ -68,7 +69,6 @@ export default function ContentForm({ content, onChange }: ContentFormProps) {
     music: { id: 'music-url', label: f.musicLabel, placeholder: f.musicPlaceholder, hint: f.musicHint },
     pdf: { id: 'pdf-url', label: f.pdfLabel, placeholder: f.pdfPlaceholder },
     images: { id: 'images-url', label: f.imagesLabel, placeholder: f.imagesPlaceholder, hint: f.imagesHint },
-    apps: { id: 'apps-url', label: f.appsLabel, placeholder: f.appsPlaceholder, hint: f.appsHint },
     links: { id: 'links-url', label: f.linksLabel, placeholder: f.linksPlaceholder, hint: f.linksHint },
   };
 
@@ -269,6 +269,13 @@ export default function ContentForm({ content, onChange }: ContentFormProps) {
         <BusinessForm
           business={content.business}
           onChange={(business) => onChange({ ...content, business })}
+        />
+      )}
+
+      {content.type === 'apps' && (
+        <AppsForm
+          apps={content.apps}
+          onChange={(apps) => onChange({ ...content, apps })}
         />
       )}
 

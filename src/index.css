@@ -1516,6 +1516,56 @@ body.page-loading {
   border-top: 1px solid var(--border);
 }
 
+/* ── Formulaire Apps ── */
+.apps-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.apps-stores-hint {
+  margin: 0;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--accent);
+  line-height: 1.4;
+}
+
+.apps-store-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.apps-store-btn {
+  flex: 1;
+  min-width: 5.5rem;
+  min-height: 2.75rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--accent);
+  border-radius: var(--radius);
+  background: transparent;
+  color: var(--accent);
+  font-family: var(--font);
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.apps-store-btn:hover {
+  background: var(--accent-subtle);
+}
+
+.apps-store-btn.active {
+  background: var(--accent);
+  color: var(--bg-card, #fff);
+}
+
+.apps-store-url {
+  margin-top: 0.25rem;
+}
+
 .business-image-upload {
   display: flex;
 }

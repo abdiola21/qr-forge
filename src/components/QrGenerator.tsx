@@ -88,6 +88,18 @@ const defaultContent: QrContent = {
     zip: '',
     country: '',
   },
+  apps: {
+    appName: '',
+    developer: '',
+    description: '',
+    website: '',
+    googleEnabled: false,
+    googleUrl: '',
+    appleEnabled: false,
+    appleUrl: '',
+    amazonEnabled: false,
+    amazonUrl: '',
+  },
 };
 
 /** Design par défaut (thème néon) */

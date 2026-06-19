@@ -82,6 +82,8 @@ export function getHistoryLabel(content: QrContent, payload: string, typeLabel: 
       const name = content.menu.restaurantName || content.menu.linkUrl || content.menu.pdfUrl;
       return name ? `${typeLabel} · ${truncate(name)}` : `${typeLabel} · ${modeLabel}`;
     }
+    case 'apps':
+      return `${typeLabel} · ${content.apps.appName || truncate(payload)}`;
     default:
       return `${typeLabel} · ${truncate(payload)}`;
   }

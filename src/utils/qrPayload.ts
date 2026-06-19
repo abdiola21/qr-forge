@@ -128,6 +128,41 @@ function buildMenu(menu: QrContent['menu']): string {
   }
 }
 
+interface AppStoreLink {
+  label: string;
+  url: string;
+}
+
+function getAppStoreLinks(apps: QrContent['apps']): AppStoreLink[] {
+  const links: AppStoreLink[] = [];
+  if (apps.googleEnabled && apps.googleUrl.trim()) {
+    links.push({ label: 'Google Play', url: apps.googleUrl.trim() });
+  }
+  if (apps.appleEnabled && apps.appleUrl.trim()) {
+    links.push({ label: 'App Store', url: apps.appleUrl.trim() });
+  }
+  if (apps.amazonEnabled && apps.amazonUrl.trim()) {
+    links.push({ label: 'Amazon Appstore', url: apps.amazonUrl.trim() });
+  }
+  return links;
+}
+
+/** Encode une app : URL principale ou fiche texte multi-stores */
+function buildApps(apps: QrContent['apps']): string {
+  const storeLinks = getAppStoreLinks(apps);
+  const website = apps.website.trim();
+
+  if (website && isSafeHttpUrl(website)) return website;
+  if (storeLinks.length === 1) return storeLinks[0].url;
+
+  const lines = [`APP: ${apps.appName.trim()}`];
+  if (apps.developer.trim()) lines.push(`Developer: ${apps.developer.trim()}`);
+  if (apps.description.trim()) lines.push(`Description: ${apps.description.trim()}`);
+  if (website) lines.push(`Website: ${website}`);
+  for (const link of storeLinks) lines.push(`${link.label}: ${link.url}`);
+  return lines.join('\n');
+}
+
 /** Génère la chaîne de données encodée dans le QR code */
 export function buildQrPayload(content: QrContent): string {
   if (isUrlContentType(content.type)) {
@@ -159,6 +194,8 @@ export function buildQrPayload(content: QrContent): string {
       return buildCoupon(content.coupon);
     case 'menu':
       return buildMenu(content.menu);
+    case 'apps':
+      return buildApps(content.apps);
     case 'location':
       return content.url.trim();
     default:
@@ -197,6 +234,17 @@ function hasUnsafeUrlInContent(content: QrContent): boolean {
 
   if (content.type === 'location' && content.url.trim()) {
     return hasUnsafeUrlScheme(content.url);
+  }
+
+  if (content.type === 'apps') {
+    const { apps } = content;
+    if (apps.website.trim() && hasUnsafeUrlScheme(apps.website)) return true;
+    const urls = [
+      apps.googleEnabled ? apps.googleUrl : '',
+      apps.appleEnabled ? apps.appleUrl : '',
+      apps.amazonEnabled ? apps.amazonUrl : '',
+    ].filter(Boolean);
+    return urls.some((url) => hasUnsafeUrlScheme(url));
   }
 
   return false;
@@ -246,6 +294,14 @@ export function isPayloadValid(content: QrContent): boolean {
       if (menu.mode === 'pdf') return isSafeHttpUrl(menu.pdfUrl.trim());
       if (menu.mode === 'link') return isSafeHttpUrl(menu.linkUrl.trim());
       return buildDigitalMenu(menu).length > 0;
+    }
+    case 'apps': {
+      const { apps } = content;
+      if (!apps.appName.trim()) return false;
+      const storeUrls = getAppStoreLinks(apps).map((l) => l.url);
+      if (storeUrls.length === 0) return false;
+      if (apps.website.trim() && !isSafeHttpUrl(apps.website.trim())) return false;
+      return storeUrls.every((url) => isSafeHttpUrl(url));
     }
     case 'location':
       return isSafeHttpUrl(content.url.trim());

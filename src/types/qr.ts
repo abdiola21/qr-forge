@@ -119,6 +119,23 @@ export interface BusinessData {
   country: string;
 }
 
+/** Boutique d'application mobile */
+export type AppStore = 'google' | 'apple' | 'amazon';
+
+/** Données QR application mobile */
+export interface AppsData {
+  appName: string;
+  developer: string;
+  description: string;
+  website: string;
+  googleEnabled: boolean;
+  googleUrl: string;
+  appleEnabled: boolean;
+  appleUrl: string;
+  amazonEnabled: boolean;
+  amazonUrl: string;
+}
+
 /** Contenu saisi par l'utilisateur selon le type choisi */
 export interface QrContent {
   type: QrContentType;
@@ -136,6 +153,7 @@ export interface QrContent {
   coupon: CouponData;
   menu: MenuData;
   business: BusinessData;
+  apps: AppsData;
 }
 
 /** Options visuelles de personnalisation du QR code */
