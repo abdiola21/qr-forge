@@ -9,7 +9,16 @@ export type QrContentType =
   | 'social'
   | 'text'
   | 'email'
-  | 'wifi';
+  | 'wifi'
+  | 'images'
+  | 'menu'
+  | 'business'
+  | 'apps'
+  | 'links'
+  | 'coupon'
+  | 'facebook'
+  | 'whatsapp'
+  | 'instagram';
 
 /** Réseaux sociaux disponibles pour les QR codes */
 export type SocialNetwork =
@@ -48,6 +57,13 @@ export interface ContactData {
   jobTitle: string;
   website: string;
   note: string;
+  searchAddress: string;
+  manualEntry: boolean;
+  street: string;
+  city: string;
+  state: string;
+  zip: string;
+  country: string;
 }
 
 /** Paramètres de connexion Wi-Fi encodés dans le QR code */
@@ -57,10 +73,58 @@ export interface WifiData {
   encryption: 'WPA' | 'WEP' | 'nopass';
 }
 
+/** Mode de création d'un menu QR */
+export type MenuMode = 'digital' | 'pdf' | 'link';
+
+export interface MenuItem {
+  name: string;
+  price: string;
+  description: string;
+}
+
+export interface MenuSection {
+  title: string;
+  items: MenuItem[];
+}
+
+export interface MenuData {
+  mode: MenuMode | null;
+  restaurantName: string;
+  sections: MenuSection[];
+  pdfUrl: string;
+  linkUrl: string;
+}
+
+/** Données d'un coupon promotionnel */
+export interface CouponData {
+  code: string;
+  validUntil: string;
+  terms: string;
+  buttonText: string;
+  buttonUrl: string;
+}
+
+/** Données fiche entreprise / organisation */
+export interface BusinessData {
+  imageUrl: string | null;
+  company: string;
+  title: string;
+  subtitle: string;
+  searchAddress: string;
+  manualEntry: boolean;
+  street: string;
+  city: string;
+  state: string;
+  zip: string;
+  country: string;
+}
+
 /** Contenu saisi par l'utilisateur selon le type choisi */
 export interface QrContent {
   type: QrContentType;
   url: string;
+  locationQuery: string;
+  locationManualLink: boolean;
   text: string;
   contact: ContactData;
   socialNetwork: SocialNetwork;
@@ -69,6 +133,9 @@ export interface QrContent {
   emailSubject: string;
   emailBody: string;
   wifi: WifiData;
+  coupon: CouponData;
+  menu: MenuData;
+  business: BusinessData;
 }
 
 /** Options visuelles de personnalisation du QR code */

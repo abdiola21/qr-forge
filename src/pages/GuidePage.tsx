@@ -1,12 +1,35 @@
 /** Page Guide & FAQ — contenu indexable pour le SEO */
-import { useEffect } from 'react';
+import { useEffect, type ReactNode } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, HelpCircle, BookOpen, Sparkles } from 'lucide-react';
+import {
+  ArrowLeft, HelpCircle, BookOpen, Sparkles, LayoutGrid,
+  User, Globe, FileText, Image, Video, Wifi, UtensilsCrossed,
+  Briefcase, Music, Smartphone, Users, TicketPercent, Share2, MessageCircle,
+} from 'lucide-react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { useLanguage } from '../i18n/LanguageContext';
 import { siteConfig } from '../config/site';
 import { usePageSeo } from '../hooks/usePageSeo';
+
+const TYPE_ICONS: Record<string, ReactNode> = {
+  vcard: <User size={22} strokeWidth={1.75} />,
+  website: <Globe size={22} strokeWidth={1.75} />,
+  pdf: <FileText size={22} strokeWidth={1.75} />,
+  images: <Image size={22} strokeWidth={1.75} />,
+  video: <Video size={22} strokeWidth={1.75} />,
+  wifi: <Wifi size={22} strokeWidth={1.75} />,
+  menu: <UtensilsCrossed size={22} strokeWidth={1.75} />,
+  business: <Briefcase size={22} strokeWidth={1.75} />,
+  mp3: <Music size={22} strokeWidth={1.75} />,
+  apps: <Smartphone size={22} strokeWidth={1.75} />,
+  links: <Users size={22} strokeWidth={1.75} />,
+  coupon: <TicketPercent size={22} strokeWidth={1.75} />,
+  facebook: <Share2 size={22} strokeWidth={1.75} />,
+  whatsapp: <MessageCircle size={22} strokeWidth={1.75} />,
+  social: <Share2 size={22} strokeWidth={1.75} />,
+  instagram: <Share2 size={22} strokeWidth={1.75} />,
+};
 
 export default function GuidePage() {
   const { t, lang } = useLanguage();
@@ -84,6 +107,27 @@ export default function GuidePage() {
                 </li>
               ))}
             </ol>
+          </section>
+
+          <section className="legal-section" aria-labelledby="guide-types-title">
+            <div className="legal-section-head">
+              <div className="legal-section-icon">
+                <LayoutGrid size={20} strokeWidth={2} />
+              </div>
+              <h2 id="guide-types-title">{g.typesTitle}</h2>
+            </div>
+            <p className="guide-types-intro">{g.typesIntro}</p>
+            <ul className="guide-types-grid">
+              {g.types.map((type) => (
+                <li key={type.id} className="guide-type-card">
+                  <span className="guide-type-icon" aria-hidden="true">
+                    {TYPE_ICONS[type.id]}
+                  </span>
+                  <h3>{type.name}</h3>
+                  <p>{type.desc}</p>
+                </li>
+              ))}
+            </ul>
           </section>
 
           <section className="legal-section" aria-labelledby="guide-faq-title">

@@ -3,11 +3,14 @@ import { useState, useEffect, useCallback } from 'react';
 import {
   Globe, User, Video, Music, FileText, MapPin, Share2, Type, Mail, Wifi,
   Download, FileDown, Sparkles, Palette, CheckCircle2, AlertCircle, FileCode2,
+  Image, UtensilsCrossed, Briefcase, Smartphone, Link2, TicketPercent,
 } from 'lucide-react';
 import type { QrContent, QrDesign, QrContentType } from '../types/qr';
 import { CONTENT_TYPES } from '../constants/designOptions';
 import { buildQrPayload, getPayloadValidationIssue } from '../utils/qrPayload';
 import { resolveEffectiveLogo, isAutoSocialLogo } from '../utils/resolveQrLogo';
+import { isSocialContentType, resolveSocialNetwork, socialNetworkForType } from '../utils/contentTypeHelpers';
+import { emptyAddressFields } from '../utils/addressFields';
 import {
   loadHistory, addToHistory, removeHistoryEntry, clearHistory,
   getHistoryLabel, type QrHistoryEntry,
@@ -19,6 +22,7 @@ import DesignPanel from './DesignPanel';
 import LogoPanel from './LogoPanel';
 import QrHistoryPanel from './QrHistoryPanel';
 import PhonePreviewMockup from './PhonePreviewMockup';
+import SocialIcon from './SocialIcon';
 
 const ICONS: Record<string, React.ReactNode> = {
   Globe: <Globe size={18} />,
@@ -31,16 +35,25 @@ const ICONS: Record<string, React.ReactNode> = {
   Type: <Type size={18} />,
   Mail: <Mail size={18} />,
   Wifi: <Wifi size={18} />,
+  Image: <Image size={18} />,
+  UtensilsCrossed: <UtensilsCrossed size={18} />,
+  Briefcase: <Briefcase size={18} />,
+  Smartphone: <Smartphone size={18} />,
+  Link2: <Link2 size={18} />,
+  TicketPercent: <TicketPercent size={18} />,
 };
 
 /** Valeurs par défaut du contenu */
 const defaultContent: QrContent = {
   type: 'url',
   url: '',
+  locationQuery: '',
+  locationManualLink: false,
   text: '',
   contact: {
     firstName: '', lastName: '', phone: '', email: '',
     company: '', jobTitle: '', website: '', note: '',
+    ...emptyAddressFields(),
   },
   socialNetwork: 'instagram',
   socialUsername: '',
@@ -48,6 +61,33 @@ const defaultContent: QrContent = {
   emailSubject: '',
   emailBody: '',
   wifi: { ssid: '', password: '', encryption: 'WPA' },
+  coupon: {
+    code: '',
+    validUntil: new Date().toISOString().slice(0, 10),
+    terms: '',
+    buttonText: '',
+    buttonUrl: '',
+  },
+  menu: {
+    mode: null,
+    restaurantName: '',
+    sections: [{ title: '', items: [{ name: '', price: '', description: '' }] }],
+    pdfUrl: '',
+    linkUrl: '',
+  },
+  business: {
+    imageUrl: null,
+    company: '',
+    title: '',
+    subtitle: '',
+    searchAddress: '',
+    manualEntry: false,
+    street: '',
+    city: '',
+    state: '',
+    zip: '',
+    country: '',
+  },
 };
 
 /** Design par défaut (thème néon) */
@@ -124,6 +164,19 @@ export default function QrGenerator() {
     setHistory([]);
   };
 
+  const handleTypeChange = (typeId: QrContentType) => {
+    const presetNetwork = socialNetworkForType(typeId);
+    setContent({
+      ...content,
+      type: typeId,
+      ...(presetNetwork ? { socialNetwork: presetNetwork } : {}),
+    });
+  };
+
+  const activeSocialNetwork = isSocialContentType(content.type)
+    ? resolveSocialNetwork(content)
+    : undefined;
+
   return (
     <section id="generator" className="generator">
       <div className="generator-card">
@@ -156,9 +209,11 @@ export default function QrGenerator() {
                       key={type.id}
                       type="button"
                       className={`type-btn ${content.type === type.id ? 'active' : ''}`}
-                      onClick={() => setContent({ ...content, type: type.id as QrContentType })}
+                      onClick={() => handleTypeChange(type.id)}
                     >
-                      {ICONS[type.icon]}
+                      {'socialIcon' in type && type.socialIcon
+                        ? <SocialIcon network={type.socialIcon} size={18} />
+                        : ICONS[type.icon]}
                       <span>{t.contentTypes[type.id]}</span>
                     </button>
                   ))}
@@ -169,7 +224,7 @@ export default function QrGenerator() {
                   onChange={setDesign}
                   autoSocialLogo={autoSocialLogo}
                   effectiveLogoUrl={effectiveLogo}
-                  socialNetwork={content.type === 'social' ? content.socialNetwork : undefined}
+                  socialNetwork={activeSocialNetwork}
                 />
               </>
             ) : (

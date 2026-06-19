@@ -1,4 +1,5 @@
 import type { QrContent, QrDesign } from '../types/qr';
+import { resolveSocialNetwork } from './contentTypeHelpers';
 
 export interface QrHistoryEntry {
   id: string;
@@ -65,10 +66,22 @@ export function getHistoryLabel(content: QrContent, payload: string, typeLabel: 
       const name = [content.contact.firstName, content.contact.lastName].filter(Boolean).join(' ');
       return name ? `${typeLabel} · ${name}` : `${typeLabel} · ${truncate(payload)}`;
     }
+    case 'business':
+      return `${typeLabel} · ${content.business.company || truncate(payload)}`;
     case 'social':
-      return `${typeLabel} · ${content.socialNetwork} / ${truncate(content.socialUsername)}`;
+    case 'facebook':
+    case 'whatsapp':
+    case 'instagram':
+      return `${typeLabel} · ${resolveSocialNetwork(content)} / ${truncate(content.socialUsername)}`;
     case 'wifi':
       return `${typeLabel} · ${content.wifi.ssid}`;
+    case 'coupon':
+      return `${typeLabel} · ${content.coupon.code || truncate(payload)}`;
+    case 'menu': {
+      const modeLabel = content.menu.mode ?? 'menu';
+      const name = content.menu.restaurantName || content.menu.linkUrl || content.menu.pdfUrl;
+      return name ? `${typeLabel} · ${truncate(name)}` : `${typeLabel} · ${modeLabel}`;
+    }
     default:
       return `${typeLabel} · ${truncate(payload)}`;
   }

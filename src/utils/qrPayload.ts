@@ -1,4 +1,11 @@
 import type { QrContent } from '../types/qr';
+import {
+  isContactContentType,
+  isSocialContentType,
+  isUrlContentType,
+  resolveSocialNetwork,
+} from './contentTypeHelpers';
+import { buildVCardAddress } from './addressFields';
 import { normalizeSocialInput } from './socialUrl';
 import { hasUnsafeUrlScheme, isSafeHttpUrl } from './urlSafety';
 
@@ -19,6 +26,30 @@ function buildVCard(contact: QrContent['contact']): string {
   if (contact.jobTitle) lines.push(`TITLE:${contact.jobTitle}`);
   if (contact.website) lines.push(`URL:${contact.website}`);
   if (contact.note) lines.push(`NOTE:${contact.note}`);
+  const addr = buildVCardAddress(contact);
+  if (addr) {
+    lines.push(addr.adr);
+    lines.push(`LABEL:${addr.label}`);
+  }
+  lines.push('END:VCARD');
+  return lines.join('\n');
+}
+
+/** vCard entreprise avec société, activité et adresse */
+function buildBusinessVCard(business: QrContent['business']): string {
+  const company = business.company.trim();
+  const lines = ['BEGIN:VCARD', 'VERSION:3.0'];
+  lines.push(`FN:${company}`);
+  lines.push(`ORG:${company}`);
+  if (business.title.trim()) lines.push(`TITLE:${business.title.trim()}`);
+  if (business.subtitle.trim()) lines.push(`NOTE:${business.subtitle.trim()}`);
+
+  const addr = buildVCardAddress(business);
+  if (addr) {
+    lines.push(addr.adr);
+    lines.push(`LABEL:${addr.label}`);
+  }
+
   lines.push('END:VCARD');
   return lines.join('\n');
 }
@@ -29,22 +60,92 @@ function buildWifi(wifi: QrContent['wifi']): string {
   return `WIFI:T:${enc};S:${wifi.ssid};P:${wifi.password};;`;
 }
 
+/** Encode un coupon : URL du bouton avec paramètres, ou texte structuré */
+function buildCoupon(coupon: QrContent['coupon']): string {
+  const code = coupon.code.trim();
+  const buttonUrl = coupon.buttonUrl.trim();
+
+  if (buttonUrl) {
+    try {
+      const url = new URL(buttonUrl);
+      url.searchParams.set('code', code);
+      if (coupon.validUntil) url.searchParams.set('expires', coupon.validUntil);
+      return url.toString();
+    } catch {
+      /* URL invalide → repli texte ci-dessous */
+    }
+  }
+
+  const lines = [`COUPON: ${code}`];
+  if (coupon.validUntil) lines.push(`Valid until: ${coupon.validUntil}`);
+  if (coupon.terms.trim()) lines.push(`Terms: ${coupon.terms.trim()}`);
+  if (coupon.buttonText.trim() && buttonUrl) {
+    lines.push(`${coupon.buttonText.trim()}: ${buttonUrl}`);
+  } else if (buttonUrl) {
+    lines.push(buttonUrl);
+  }
+  return lines.join('\n');
+}
+
+/** Formate un menu digital en texte lisible pour le QR code */
+function buildDigitalMenu(menu: QrContent['menu']): string {
+  const lines: string[] = [];
+  if (menu.restaurantName.trim()) {
+    lines.push(menu.restaurantName.trim().toUpperCase(), '');
+  }
+
+  for (const section of menu.sections) {
+    const titledItems = section.items.filter((item) => item.name.trim());
+    if (titledItems.length === 0) continue;
+
+    if (section.title.trim()) {
+      lines.push(section.title.trim(), '—'.repeat(Math.min(section.title.trim().length, 24)));
+    }
+
+    for (const item of titledItems) {
+      const price = item.price.trim() ? ` — ${item.price.trim()}` : '';
+      lines.push(`• ${item.name.trim()}${price}`);
+      if (item.description.trim()) lines.push(`  ${item.description.trim()}`);
+    }
+    lines.push('');
+  }
+
+  return lines.join('\n').trim();
+}
+
+function buildMenu(menu: QrContent['menu']): string {
+  if (!menu.mode) return '';
+
+  switch (menu.mode) {
+    case 'pdf':
+      return menu.pdfUrl.trim();
+    case 'link':
+      return menu.linkUrl.trim();
+    case 'digital':
+      return buildDigitalMenu(menu);
+    default:
+      return '';
+  }
+}
+
 /** Génère la chaîne de données encodée dans le QR code */
 export function buildQrPayload(content: QrContent): string {
+  if (isUrlContentType(content.type)) {
+    return content.url.trim();
+  }
+
   switch (content.type) {
-    case 'url':
-      return content.url.trim();
     case 'text':
       return content.text.trim();
     case 'contact':
       return buildVCard(content.contact);
-    case 'video':
-    case 'music':
-    case 'pdf':
-    case 'location':
-      return content.url.trim();
+    case 'business':
+      return buildBusinessVCard(content.business);
     case 'social':
-      return buildSocialUrl(content.socialNetwork, content.socialUsername.trim());
+    case 'facebook':
+    case 'whatsapp':
+    case 'instagram':
+      return buildSocialUrl(resolveSocialNetwork(content), content.socialUsername.trim());
     case 'email': {
       const params = new URLSearchParams();
       if (content.emailSubject) params.set('subject', content.emailSubject);
@@ -54,6 +155,12 @@ export function buildQrPayload(content: QrContent): string {
     }
     case 'wifi':
       return buildWifi(content.wifi);
+    case 'coupon':
+      return buildCoupon(content.coupon);
+    case 'menu':
+      return buildMenu(content.menu);
+    case 'location':
+      return content.url.trim();
     default:
       return '';
   }
@@ -62,22 +169,37 @@ export function buildQrPayload(content: QrContent): string {
 export type PayloadValidationIssue = 'missing' | 'unsafe_url';
 
 function hasUnsafeUrlInContent(content: QrContent): boolean {
-  switch (content.type) {
-    case 'url':
-    case 'video':
-    case 'music':
-    case 'pdf':
-    case 'location':
-      return hasUnsafeUrlScheme(content.url);
-    case 'social': {
-      const url = buildSocialUrl(content.socialNetwork, content.socialUsername);
-      return url !== '' && hasUnsafeUrlScheme(url);
-    }
-    case 'contact':
-      return content.contact.website.trim() !== '' && hasUnsafeUrlScheme(content.contact.website);
-    default:
-      return false;
+  if (isUrlContentType(content.type)) {
+    return hasUnsafeUrlScheme(content.url);
   }
+
+  if (isSocialContentType(content.type)) {
+    const url = buildSocialUrl(resolveSocialNetwork(content), content.socialUsername);
+    return url !== '' && hasUnsafeUrlScheme(url);
+  }
+
+  if (isContactContentType(content.type)) {
+    return content.contact.website.trim() !== '' && hasUnsafeUrlScheme(content.contact.website);
+  }
+
+  if (content.type === 'coupon' && content.coupon.buttonUrl.trim()) {
+    return hasUnsafeUrlScheme(content.coupon.buttonUrl);
+  }
+
+  if (content.type === 'menu') {
+    if (content.menu.mode === 'pdf' && content.menu.pdfUrl.trim()) {
+      return hasUnsafeUrlScheme(content.menu.pdfUrl);
+    }
+    if (content.menu.mode === 'link' && content.menu.linkUrl.trim()) {
+      return hasUnsafeUrlScheme(content.menu.linkUrl);
+    }
+  }
+
+  if (content.type === 'location' && content.url.trim()) {
+    return hasUnsafeUrlScheme(content.url);
+  }
+
+  return false;
 }
 
 /** Détaille pourquoi le contenu n'est pas valide (null = OK) */
@@ -93,17 +215,20 @@ export function isPayloadValid(content: QrContent): boolean {
   const payload = buildQrPayload(content);
   if (!payload) return false;
 
+  if (isUrlContentType(content.type)) {
+    return isSafeHttpUrl(payload);
+  }
+
   switch (content.type) {
-    case 'url':
-    case 'video':
-    case 'music':
-    case 'pdf':
-    case 'location':
-      return isSafeHttpUrl(payload);
     case 'contact':
       return !!(content.contact.phone || content.contact.email || content.contact.firstName);
-    case 'social': {
-      const url = buildSocialUrl(content.socialNetwork, content.socialUsername);
+    case 'business':
+      return content.business.company.trim().length > 0;
+    case 'social':
+    case 'facebook':
+    case 'whatsapp':
+    case 'instagram': {
+      const url = buildSocialUrl(resolveSocialNetwork(content), content.socialUsername);
       return url !== '' && isSafeHttpUrl(url);
     }
     case 'text':
@@ -112,6 +237,18 @@ export function isPayloadValid(content: QrContent): boolean {
       return content.email.trim().includes('@');
     case 'wifi':
       return content.wifi.ssid.trim().length > 0;
+    case 'coupon':
+      return content.coupon.code.trim().length > 0
+        && (!content.coupon.buttonUrl.trim() || isSafeHttpUrl(buildCoupon(content.coupon)));
+    case 'menu': {
+      const { menu } = content;
+      if (!menu.mode) return false;
+      if (menu.mode === 'pdf') return isSafeHttpUrl(menu.pdfUrl.trim());
+      if (menu.mode === 'link') return isSafeHttpUrl(menu.linkUrl.trim());
+      return buildDigitalMenu(menu).length > 0;
+    }
+    case 'location':
+      return isSafeHttpUrl(content.url.trim());
     default:
       return false;
   }

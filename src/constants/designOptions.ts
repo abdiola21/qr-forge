@@ -67,18 +67,27 @@ export const QR_TEMPLATES: QrTemplate[] = [
   },
 ];
 
-/** Types de contenu affichés dans le sélecteur */
+/** Types de contenu affichés dans le sélecteur (ordre grille 4×4 + extras) */
 export const CONTENT_TYPES = [
-  { id: 'url' as const, icon: 'Globe' },
   { id: 'contact' as const, icon: 'User' },
-  { id: 'video' as const, icon: 'Video' },
-  { id: 'music' as const, icon: 'Music' },
+  { id: 'url' as const, icon: 'Globe' },
   { id: 'pdf' as const, icon: 'FileText' },
-  { id: 'location' as const, icon: 'MapPin' },
+  { id: 'images' as const, icon: 'Image' },
+  { id: 'video' as const, icon: 'Video' },
+  { id: 'wifi' as const, icon: 'Wifi' },
+  { id: 'menu' as const, icon: 'UtensilsCrossed' },
+  { id: 'business' as const, icon: 'Briefcase' },
+  { id: 'music' as const, icon: 'Music' },
+  { id: 'apps' as const, icon: 'Smartphone' },
+  { id: 'links' as const, icon: 'Link2' },
+  { id: 'coupon' as const, icon: 'TicketPercent' },
+  { id: 'facebook' as const, icon: 'Share2', socialIcon: 'facebook' as const },
+  { id: 'whatsapp' as const, icon: 'Share2', socialIcon: 'whatsapp' as const },
   { id: 'social' as const, icon: 'Share2' },
+  { id: 'instagram' as const, icon: 'Share2', socialIcon: 'instagram' as const },
+  { id: 'location' as const, icon: 'MapPin' },
   { id: 'text' as const, icon: 'Type' },
   { id: 'email' as const, icon: 'Mail' },
-  { id: 'wifi' as const, icon: 'Wifi' },
 ];
 
 /** Liste des réseaux sociaux proposés (ordre de la grille) */
