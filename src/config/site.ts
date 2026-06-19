@@ -12,7 +12,7 @@ export const siteConfig = {
       defaultTitle: 'QR Forge | Générateur de QR Code gratuit',
       homeTitle: 'Générateur de QR Code gratuit',
       homeDescription:
-        'Créez des QR codes personnalisés gratuitement : logo, couleurs, PNG, SVG et PDF. Liens, contacts, réseaux sociaux, Wi-Fi et plus. Sans inscription.',
+        'Créez des QR codes personnalisés gratuitement : vCard, site web, PDF, images, vidéo, Wi-Fi, menu, entreprise, MP3, apps, coupon, Facebook, WhatsApp, Instagram. Logo, couleurs, PNG, SVG et PDF. Sans inscription.',
       legalDescription:
         'Mentions légales du site QR Forge, générateur de QR codes gratuit édité depuis le Togo.',
       guideDescription:
@@ -22,7 +22,7 @@ export const siteConfig = {
       defaultTitle: 'QR Forge | Free QR Code Generator',
       homeTitle: 'Free QR Code Generator',
       homeDescription:
-        'Create custom QR codes for free: logo, colors, PNG, SVG and PDF. Links, contacts, social media, Wi-Fi and more. No sign-up required.',
+        'Create custom QR codes for free: vCard, website, PDF, images, video, Wi-Fi, menu, business, MP3, apps, coupon, Facebook, WhatsApp, Instagram. Logo, colors, PNG, SVG and PDF. No sign-up required.',
       legalDescription:
         'Legal notice for QR Forge, a free QR code generator published from Togo.',
       guideDescription:
