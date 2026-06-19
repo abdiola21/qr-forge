@@ -17,7 +17,7 @@ export const translations = {
       title: 'Créez votre QR Code',
       titleAccent: ' sur mesure',
       subtitle:
-        'Générez des codes QR personnalisés : site web, vCard, PDF, images, vidéo, Wi-Fi, menu, entreprise, MP3, apps, liste de liens, coupon, Facebook, WhatsApp, Instagram et plus.',
+        'Générez des codes QR personnalisés : site web, vCard, PDF, images, vidéo, Wi-Fi, menu, entreprise, MP3, apps, coupon, Facebook, WhatsApp, Instagram et plus.',
       ctaPrimary: 'Créer mon QR code',
       ctaSecondary: 'Voir les fonctionnalités',
     },
@@ -54,7 +54,6 @@ export const translations = {
       menu: 'Menu',
       business: 'Entreprise',
       apps: 'Apps',
-      links: 'Liste de liens',
       coupon: 'Coupon',
       facebook: 'Facebook',
       whatsapp: 'WhatsApp',
@@ -132,9 +131,6 @@ export const translations = {
         appleUrlPlaceholder: 'https://apps.apple.com/app/...',
         amazonUrlPlaceholder: 'https://www.amazon.com/dp/...',
       },
-      linksLabel: 'Lien page multi-liens',
-      linksPlaceholder: 'https://linktr.ee/username',
-      linksHint: 'Linktree, bio.page ou page regroupant vos liens',
       couponCodeLabel: 'Code coupon',
       couponCodePlaceholder: 'Ex. PROMO25',
       couponValidUntilLabel: 'Valide jusqu\'au',
@@ -313,7 +309,7 @@ export const translations = {
       title: 'La plateforme gratuite pour créer des QR codes professionnels',
       plansTitle: 'QR Forge inclut :',
       multiContent: 'Multi-contenus',
-      multiContentDesc: 'Site web, vCard, PDF, images, vidéo, Wi-Fi, menu, entreprise, MP3, apps, liste de liens, coupon et réseaux sociaux.',
+      multiContentDesc: 'Site web, vCard, PDF, images, vidéo, Wi-Fi, menu, entreprise, MP3, apps, coupon et réseaux sociaux.',
       customDesign: 'Design personnalisé',
       customDesignDesc: 'Couleurs, formes, motifs du corps et des yeux, logo et modèles prédéfinis.',
       export: 'Export PNG & PDF',
@@ -414,7 +410,7 @@ export const translations = {
       title: 'Guide : créer un QR code gratuit en ligne',
       backHome: 'Retour à l\'accueil',
       intro:
-        'QR Forge est un générateur de QR code gratuit qui fonctionne entièrement dans votre navigateur. Créez des QR codes pour site web, vCard, PDF, images, vidéo, Wi-Fi, menu restaurant, fiche entreprise, MP3, application mobile, liste de liens, coupon ou réseaux sociaux — avec logo, couleurs et export PNG, SVG ou PDF, sans inscription.',
+        'QR Forge est un générateur de QR code gratuit qui fonctionne entièrement dans votre navigateur. Créez des QR codes pour site web, vCard, PDF, images, vidéo, Wi-Fi, menu restaurant, fiche entreprise, MP3, application mobile, coupon ou réseaux sociaux — avec logo, couleurs et export PNG, SVG ou PDF, sans inscription.',
       stepsTitle: 'Les 4 étapes pour créer votre QR code',
       typesTitle: 'Types de QR codes que vous pouvez créer',
       typesIntro:
@@ -431,7 +427,6 @@ export const translations = {
         { id: 'business', name: 'Entreprise', desc: 'Fiche professionnelle vCard avec société, poste, site web et coordonnées.' },
         { id: 'mp3', name: 'MP3', desc: 'Spotify, SoundCloud, podcast ou fichier audio en ligne.' },
         { id: 'apps', name: 'Apps', desc: 'Lien App Store ou Google Play pour télécharger votre application.' },
-        { id: 'links', name: 'Liste de liens', desc: 'Bio Linktree, page multi-liens ou hub de tous vos profils.' },
         { id: 'coupon', name: 'Coupon', desc: 'Page promotionnelle, code réduction ou offre spéciale scannable.' },
         { id: 'facebook', name: 'Facebook', desc: 'Lien direct vers votre page ou profil Facebook.' },
         { id: 'whatsapp', name: 'WhatsApp', desc: 'Ouvre une conversation WhatsApp avec votre numéro.' },
@@ -446,7 +441,7 @@ export const translations = {
         },
         {
           q: 'Quels types de contenu puis-je encoder dans un QR code ?',
-          a: 'QR Forge couvre les usages essentiels : site web, vCard (contact), PDF, images (via lien), vidéo, Wi-Fi, menu restaurant, fiche entreprise, MP3/musique, application mobile (App Store / Play Store), liste de liens (Linktree), coupon promo, Facebook, WhatsApp, Instagram et autres réseaux sociaux. Vous pouvez aussi encoder un lieu Google Maps, un e-mail ou du texte libre.',
+          a: 'QR Forge couvre les usages essentiels : site web, vCard (contact), PDF, images (via lien), vidéo, Wi-Fi, menu restaurant, fiche entreprise, MP3/musique, application mobile (App Store / Play Store), coupon promo, Facebook, WhatsApp, Instagram et autres réseaux sociaux. Vous pouvez aussi encoder un lieu Google Maps, un e-mail ou du texte libre.',
         },
         {
           q: 'Puis-je ajouter mon logo au centre du QR code ?',
@@ -482,11 +477,7 @@ export const translations = {
         },
         {
           q: 'Comment créer un QR code pour télécharger mon application ?',
-          a: 'Sélectionnez « Site web » et entrez le lien App Store (iOS) ou Google Play (Android). Vous pouvez aussi créer une page bio multi-liens regroupant les deux stores.',
-        },
-        {
-          q: 'Comment créer un QR code liste de liens (Linktree) ?',
-          a: 'Créez votre page sur Linktree, bio.page ou un équivalent, puis encodez son URL avec le type « Site web ». Un seul QR donne accès à tous vos liens.',
+          a: 'Sélectionnez le type « Apps » et renseignez les liens App Store (iOS) et/ou Google Play (Android). Vous pouvez aussi utiliser « Site web » pour une page regroupant vos liens de téléchargement.',
         },
         {
           q: 'Comment créer un QR code coupon ou promotion ?',
@@ -520,7 +511,7 @@ export const translations = {
       title: 'Create your QR Code',
       titleAccent: ' your way',
       subtitle:
-        'Generate custom QR codes: website, vCard, PDF, images, video, Wi-Fi, menu, business, MP3, apps, link list, coupon, Facebook, WhatsApp, Instagram and more.',
+        'Generate custom QR codes: website, vCard, PDF, images, video, Wi-Fi, menu, business, MP3, apps, coupon, Facebook, WhatsApp, Instagram and more.',
       ctaPrimary: 'Create my QR code',
       ctaSecondary: 'Explore features',
     },
@@ -557,7 +548,6 @@ export const translations = {
       menu: 'Menu',
       business: 'Business',
       apps: 'Apps',
-      links: 'List of Links',
       coupon: 'Coupon',
       facebook: 'Facebook',
       whatsapp: 'WhatsApp',
@@ -635,9 +625,6 @@ export const translations = {
         appleUrlPlaceholder: 'https://apps.apple.com/app/...',
         amazonUrlPlaceholder: 'https://www.amazon.com/dp/...',
       },
-      linksLabel: 'Multi-link page URL',
-      linksPlaceholder: 'https://linktr.ee/username',
-      linksHint: 'Linktree, bio.page or page grouping all your links',
       couponCodeLabel: 'Coupon code',
       couponCodePlaceholder: 'E.g. SALE25OFF',
       couponValidUntilLabel: 'Valid until',
@@ -816,7 +803,7 @@ export const translations = {
       title: 'The free platform to create professional QR codes',
       plansTitle: 'QR Forge includes:',
       multiContent: 'Multi-content',
-      multiContentDesc: 'Website, vCard, PDF, images, video, Wi-Fi, menu, business, MP3, apps, link list, coupon and social media.',
+      multiContentDesc: 'Website, vCard, PDF, images, video, Wi-Fi, menu, business, MP3, apps, coupon and social media.',
       customDesign: 'Custom design',
       customDesignDesc: 'Colors, shapes, body and eye patterns, logo and preset templates.',
       export: 'PNG & PDF export',
@@ -917,7 +904,7 @@ export const translations = {
       title: 'Guide: create a free QR code online',
       backHome: 'Back to home',
       intro:
-        'QR Forge is a free QR code generator that runs entirely in your browser. Create QR codes for websites, vCards, PDFs, images, video, Wi-Fi, restaurant menus, business cards, MP3, mobile apps, link lists, coupons or social media — with logo, colors and PNG, SVG or PDF export, no sign-up required.',
+        'QR Forge is a free QR code generator that runs entirely in your browser. Create QR codes for websites, vCards, PDFs, images, video, Wi-Fi, restaurant menus, business cards, MP3, mobile apps, coupons or social media — with logo, colors and PNG, SVG or PDF export, no sign-up required.',
       stepsTitle: '4 steps to create your QR code',
       typesTitle: 'QR code types you can create',
       typesIntro:
@@ -934,7 +921,6 @@ export const translations = {
         { id: 'business', name: 'Business', desc: 'Professional vCard with company, job title, website and contact details.' },
         { id: 'mp3', name: 'MP3', desc: 'Spotify, SoundCloud, podcast or any online audio file.' },
         { id: 'apps', name: 'Apps', desc: 'App Store or Google Play link to download your mobile app.' },
-        { id: 'links', name: 'List of Links', desc: 'Linktree bio, multi-link page or hub for all your profiles.' },
         { id: 'coupon', name: 'Coupon', desc: 'Promo page, discount code or special offer — scannable in one tap.' },
         { id: 'facebook', name: 'Facebook', desc: 'Direct link to your Facebook page or profile.' },
         { id: 'whatsapp', name: 'WhatsApp', desc: 'Opens a WhatsApp chat with your phone number.' },
@@ -949,7 +935,7 @@ export const translations = {
         },
         {
           q: 'What content types can I encode in a QR code?',
-          a: 'QR Forge covers essential use cases: website, vCard (contact), PDF, images (via link), video, Wi-Fi, restaurant menu, business card, MP3/music, mobile app (App Store / Play Store), link list (Linktree), promo coupon, Facebook, WhatsApp, Instagram and other social networks. You can also encode a Google Maps location, email or plain text.',
+          a: 'QR Forge covers essential use cases: website, vCard (contact), PDF, images (via link), video, Wi-Fi, restaurant menu, business card, MP3/music, mobile app (App Store / Play Store), promo coupon, Facebook, WhatsApp, Instagram and other social networks. You can also encode a Google Maps location, email or plain text.',
         },
         {
           q: 'Can I add my logo in the center of the QR code?',
@@ -985,11 +971,7 @@ export const translations = {
         },
         {
           q: 'How do I create a QR code to download my app?',
-          a: 'Select "Website" and enter your App Store (iOS) or Google Play (Android) link. You can also create a multi-link bio page grouping both stores.',
-        },
-        {
-          q: 'How do I create a link list QR code (Linktree)?',
-          a: 'Create your page on Linktree, bio.page or similar, then encode its URL with "Website". One QR gives access to all your links.',
+          a: 'Select the "Apps" type and add your App Store (iOS) and/or Google Play (Android) links. You can also use "Website" for a landing page grouping your download links.',
         },
         {
           q: 'How do I create a coupon or promo QR code?',

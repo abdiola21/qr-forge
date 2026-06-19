@@ -16,7 +16,7 @@ export const siteConfig = {
       legalDescription:
         'Mentions légales du site QR Forge, générateur de QR codes gratuit édité depuis le Togo.',
       guideDescription:
-        'Guide complet : QR code gratuit vCard, site web, PDF, images, vidéo, Wi-Fi, menu, entreprise, MP3, apps, liste de liens, coupon, WhatsApp, Instagram. PNG, SVG, PDF.',
+        'Guide complet : QR code gratuit vCard, site web, PDF, images, vidéo, Wi-Fi, menu, entreprise, MP3, apps, coupon, WhatsApp, Instagram. PNG, SVG, PDF.',
     },
     en: {
       defaultTitle: 'QR Forge | Free QR Code Generator',
@@ -26,7 +26,7 @@ export const siteConfig = {
       legalDescription:
         'Legal notice for QR Forge, a free QR code generator published from Togo.',
       guideDescription:
-        'Complete guide: free QR codes for vCard, website, PDF, images, video, Wi-Fi, menu, business, MP3, apps, link list, coupon, WhatsApp, Instagram. PNG, SVG, PDF.',
+        'Complete guide: free QR codes for vCard, website, PDF, images, video, Wi-Fi, menu, business, MP3, apps, coupon, WhatsApp, Instagram. PNG, SVG, PDF.',
     },
   },
   /** ID de mesure GA4 (ex. G-XXXXXXXXXX) — variable VITE_GA_MEASUREMENT_ID sur Vercel */

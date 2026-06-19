@@ -79,7 +79,6 @@ export const CONTENT_TYPES = [
   { id: 'business' as const, icon: 'Briefcase' },
   { id: 'music' as const, icon: 'Music' },
   { id: 'apps' as const, icon: 'Smartphone' },
-  { id: 'links' as const, icon: 'Link2' },
   { id: 'coupon' as const, icon: 'TicketPercent' },
   { id: 'facebook' as const, icon: 'Share2', socialIcon: 'facebook' as const },
   { id: 'whatsapp' as const, icon: 'Share2', socialIcon: 'whatsapp' as const },

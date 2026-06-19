@@ -69,7 +69,6 @@ export default function ContentForm({ content, onChange }: ContentFormProps) {
     music: { id: 'music-url', label: f.musicLabel, placeholder: f.musicPlaceholder, hint: f.musicHint },
     pdf: { id: 'pdf-url', label: f.pdfLabel, placeholder: f.pdfPlaceholder },
     images: { id: 'images-url', label: f.imagesLabel, placeholder: f.imagesPlaceholder, hint: f.imagesHint },
-    links: { id: 'links-url', label: f.linksLabel, placeholder: f.linksPlaceholder, hint: f.linksHint },
   };
 
   const urlField = urlFields[content.type];

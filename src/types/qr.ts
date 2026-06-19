@@ -14,7 +14,6 @@ export type QrContentType =
   | 'menu'
   | 'business'
   | 'apps'
-  | 'links'
   | 'coupon'
   | 'facebook'
   | 'whatsapp'

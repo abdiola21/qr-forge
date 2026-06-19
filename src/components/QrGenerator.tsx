@@ -3,7 +3,7 @@ import { useState, useEffect, useCallback } from 'react';
 import {
   Globe, User, Video, Music, FileText, MapPin, Share2, Type, Mail, Wifi,
   Download, FileDown, Sparkles, Palette, CheckCircle2, AlertCircle, FileCode2,
-  Image, UtensilsCrossed, Briefcase, Smartphone, Link2, TicketPercent,
+  Image, UtensilsCrossed, Briefcase, Smartphone, TicketPercent,
 } from 'lucide-react';
 import type { QrContent, QrDesign, QrContentType } from '../types/qr';
 import { CONTENT_TYPES } from '../constants/designOptions';
@@ -39,7 +39,6 @@ const ICONS: Record<string, React.ReactNode> = {
   UtensilsCrossed: <UtensilsCrossed size={18} />,
   Briefcase: <Briefcase size={18} />,
   Smartphone: <Smartphone size={18} />,
-  Link2: <Link2 size={18} />,
   TicketPercent: <TicketPercent size={18} />,
 };
 

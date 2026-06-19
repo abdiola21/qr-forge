@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import {
   ArrowLeft, HelpCircle, BookOpen, Sparkles, LayoutGrid,
   User, Globe, FileText, Image, Video, Wifi, UtensilsCrossed,
-  Briefcase, Music, Smartphone, Users, TicketPercent, Share2, MessageCircle,
+  Briefcase, Music, Smartphone, TicketPercent, Share2, MessageCircle,
 } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
@@ -23,7 +23,6 @@ const TYPE_ICONS: Record<string, ReactNode> = {
   business: <Briefcase size={22} strokeWidth={1.75} />,
   mp3: <Music size={22} strokeWidth={1.75} />,
   apps: <Smartphone size={22} strokeWidth={1.75} />,
-  links: <Users size={22} strokeWidth={1.75} />,
   coupon: <TicketPercent size={22} strokeWidth={1.75} />,
   facebook: <Share2 size={22} strokeWidth={1.75} />,
   whatsapp: <MessageCircle size={22} strokeWidth={1.75} />,

@@ -7,7 +7,6 @@ export const URL_CONTENT_TYPES = [
   'music',
   'pdf',
   'images',
-  'links',
 ] as const satisfies readonly QrContentType[];
 
 export type UrlContentType = (typeof URL_CONTENT_TYPES)[number];
